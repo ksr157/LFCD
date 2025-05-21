@@ -1,0 +1,33 @@
+cd /hicplotter
+python /HIC/HiCPlotter_v1.py \
+-f /hicplotter/Akt1/LECchr12select_matrix.txt \
+-n LEC \
+-chr chr12 \
+-g /Akt1/LEC_chr12_gene.bed \
+-r 25000 \
+-o LEC_chr12_ \
+-fh 1 \
+-s 4361 -e 4389 \
+-pi 0 \
+-ptr 1 \
+-ptd 0 \-pdb 0 \
+-hist CTCF_LEC_1_bowtie2.fragments.normalized.bedgraph,CTCF_LEC_2_bowtie2.fragments.normalized.bedgraph,SMC3_LEC_1_bowtie2.fragments.normalized.bedgraph,SMC3_LEC_2_bowtie2.fragments.normalized.bedgraph \
+-hl CTCF_1,CTCF_2,SMC3_1,SMC3_2 \
+-peak LECmerged_loops.bed
+
+cd /hicplotter
+python /HIC/HiCPlotter_v1.py \
+-f /hicplotter/Akt1/LFCchr12select_matrix.txt \
+-n LFC \
+-chr chr12 \
+-g /Akt1/LFC_chr12_gene.bed \
+-r 25000 \
+-o LFC_chr12_ \
+-fh 1 \
+-s 4361 -e 4389 \
+-pi 0 \
+-ptr 1 \
+-ptd 0 \-pdb 0 \
+-hist CTCF_LFC_1_bowtie2.fragments.normalized.bedgraph,CTCF_LFC_2_bowtie2.fragments.normalized.bedgraph,SMC3_LFC_1_bowtie2.fragments.normalized.bedgraph,SMC3_LFC_2_bowtie2.fragments.normalized.bedgraph \
+-hl CTCF_1,CTCF_2,SMC3_1,SMC3_2 \
+-peak LFCmerged_loops.bed
