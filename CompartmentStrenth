@@ -1,0 +1,69 @@
+import pandas as pd
+import os
+from tqdm import tqdm  
+
+
+matrix_folder = "/work/interactions/"
+bedgraph_file = "/work/LEC.inter.clean.bedgraph"
+
+
+bedgraph_df = pd.read_csv(bedgraph_file, sep='\t', header=None, names=["chr", "start", "end", "value"])
+
+matrix_files = [f for f in os.listdir(matrix_folder) if f.endswith("_whole_matrix.txt")]
+
+result = []
+
+for matrix_file in tqdm(matrix_files, desc="Processing interaction matrices", unit="file"):
+
+    chr_name = matrix_file.split("_")[0]
+
+
+    matrix_df = pd.read_csv(os.path.join(matrix_folder, matrix_file), sep='\t', header=None, names=["start", "end", "interaction_strength"])
+
+
+    chr_bedgraph = bedgraph_df[bedgraph_df["chr"] == chr_name]
+
+
+    intra_interaction_strength = 0
+    inter_interaction_strength = 0
+
+
+    for _, row in matrix_df.iterrows():
+        start, end, interaction_strength = row["start"], row["end"], row["interaction_strength"]
+        
+        intra_flag = False
+        inter_flag = False
+
+        for _, region in chr_bedgraph.iterrows():
+            region_start, region_end = region["start"], region["end"]
+
+            if region_start <= start < region_end and region_start <= end < region_end:
+                intra_interaction_strength += interaction_strength
+                intra_flag = True
+                break
+
+            elif (region_start <= start < region_end) and not (region_start <= end < region_end):
+                inter_interaction_strength += interaction_strength
+                inter_flag = True
+                break
+            elif (region_start <= end < region_end) and not (region_start <= start < region_end):
+                inter_interaction_strength += interaction_strength
+                inter_flag = True
+                break
+
+
+    if inter_interaction_strength > 0:
+        ratio = intra_interaction_strength / inter_interaction_strength
+    else:
+        ratio = float('inf')  
+
+
+    result.append({"chr": chr_name, "intra_interaction_strength": intra_interaction_strength,
+                   "inter_interaction_strength": inter_interaction_strength, "ratio": ratio})
+
+
+result_df = pd.DataFrame(result)
+
+
+result_df.to_csv("/LEC_compartmentstrenth.csv", index=False)
+print("Ratio data saved to chromosome_interaction_ratio.csv")
