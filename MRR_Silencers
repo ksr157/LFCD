@@ -1,0 +1,10 @@
+conda activate Hic
+cd MRR
+python /MRR/ROSE_geneMapper.py -i /MRR/LEC1/LEC1_AllSilencers.table.txt \
+-g mm10 -o /MRR/LEC1 2> /MRR/LEC1/LEC1.log
+
+conda activate Hic
+cd MRR
+python /ROSE_geneMapper.py -i /MRR/LEC2/LEC2_AllSilencers.table.txt \
+-g mm10 -o /MRR/LEC2 2> /MRR/LEC2/LEC2.log
+
