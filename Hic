@@ -1,0 +1,21 @@
+conda activate Hic
+module load proxy   
+module load R      
+module load anaconda3  
+module load java/1.8.0_191
+module load cuda/10.1
+module load cudnn/10.1-v7.6 
+
+ulimit -n 1048576
+export PATH=$HOME/bin:$PATH
+
+bash juicer.sh \
+-g mm39 \
+-d work \
+-D juicer \
+-y GRCm39_MboI.txt \
+-z GRCm39.genome.fa \
+-p GRCm39.chrom.sizes \
+-s MboI
+
+
